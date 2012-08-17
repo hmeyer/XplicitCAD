@@ -12,17 +12,31 @@
 #include <vtkImageData.h>
  
 #include <vtkSphere.h>
+#include <vtkQuadric.h>
+#include <vtkImplicitBoolean.h>
  
 int main (int argc, char *argv[])
 {
   vtkSmartPointer<vtkSphere> sphere = 
     vtkSmartPointer<vtkSphere>::New();
+  sphere->SetCenter(0.5,0,0);
+
+  vtkSmartPointer<vtkQuadric> quad = 
+    vtkSmartPointer<vtkQuadric>::New();
+  quad->SetCoefficients(1,3,9,0,0,0,0,0,0,-1);
+
+  vtkSmartPointer<vtkImplicitBoolean> bimp = 
+    vtkSmartPointer<vtkImplicitBoolean>::New();
+  bimp->AddFunction(quad);
+  bimp->AddFunction(sphere);
+  bimp->SetOperationTypeToUnion();
+  bimp->Print(std::cerr);
  
   // Sample the function
   vtkSmartPointer<vtkSampleFunction> sample = 
     vtkSmartPointer<vtkSampleFunction>::New();
-  sample->SetSampleDimensions(15,15,15);
-  sample->SetImplicitFunction(sphere);
+  sample->SetSampleDimensions(50,50,50);
+  sample->SetImplicitFunction(bimp);
   double value = 2.0;
   double xmin = -value, xmax = value,
     ymin = -value, ymax = value,
@@ -61,6 +75,13 @@ int main (int argc, char *argv[])
  
   renderWindow->Render();
   interactor->Start();
+
+  // second round - now as difference
+  bimp->SetOperationTypeToDifference();
+  bimp->Print(std::cerr);
+  renderWindow->Render();
+  interactor->Start();
+  
  
   return EXIT_SUCCESS;
 }
