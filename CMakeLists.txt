@@ -1,18 +1,18 @@
 cmake_minimum_required(VERSION 2.8)
  
-PROJECT(ImplicitSphere)
+PROJECT(xplicit)
  
 find_package(VTK REQUIRED)
 include(${VTK_USE_FILE})
  
 if (APPLE)
-  add_executable(ImplicitTest MACOSX_BUNDLE ImplicitTest.cxx)
+  add_executable(xplicit MACOSX_BUNDLE Xplicit.cxx)
 else()
-  add_executable(ImplicitTest ImplicitTest.cxx)
+  add_executable(xplicit Xplicit.cxx)
 endif()
  
 if(VTK_LIBRARIES)
-  target_link_libraries(ImplicitTest ${VTK_LIBRARIES})
+  target_link_libraries(xplicit ${VTK_LIBRARIES})
 else()
-  target_link_libraries(ImplicitTest vtkHybrid )
+  target_link_libraries(xplicit vtkHybrid )
 endif()
