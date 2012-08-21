@@ -32,12 +32,15 @@
 #include <vtkQuadric.h>
 #include <vtkImplicitBoolean.h>
 
+#include "luabridge.h"
+
  
 void DisplayMesh(vtkAlgorithmOutput *image);
 void DisplayImage(vtkAlgorithmOutput *image);
 
 int main (int argc, char *argv[])
 {
+  luatest();
   vtkSmartPointer<vtkSphere> sphere = 
     vtkSmartPointer<vtkSphere>::New();
   sphere->SetCenter(0.3,0,0);
