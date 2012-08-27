@@ -24,7 +24,6 @@
 #include "vtkInteractorStyleImage.h"
 #include "vtkCommand.h"
 #include "vtkImageData.h"
-#include "vtkImageMapper3D.h"
 #include "vtkStreamingDemandDrivenPipeline.h"
 #include "vtkInformation.h"
  
@@ -284,7 +283,7 @@ void DisplayImage(vtkAlgorithmOutput *image)
   // Display the image
   vtkSmartPointer<vtkImageActor> actor =
     vtkSmartPointer<vtkImageActor>::New();
-  actor->GetMapper()->SetInputConnection(color->GetOutputPort());
+  actor->SetInput(color->GetOutput());
 
   vtkSmartPointer<vtkRenderer> renderer =
     vtkSmartPointer<vtkRenderer>::New();
