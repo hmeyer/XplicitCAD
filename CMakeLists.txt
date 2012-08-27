@@ -3,14 +3,18 @@ cmake_minimum_required(VERSION 2.8)
 PROJECT(xplicit)
 
 SET( xplicitSrc 
-	main/Xplicit.cxx
-	main/mainwindow.cxx
-	lua/luabridge.cxx
+	main/Xplicit.cpp
+	main/main.cpp
+	main/mainwindow.cpp
+	main/implicitwidget.cpp
+	primitives/primitives.cpp
+	lua/luabridge.cpp
 )
 
 SET( HeaderDirs
 	main
 	lua
+	primitives
 )
 
 SET( UIS 
@@ -62,7 +66,7 @@ else()
 endif()
  
 if(VTK_LIBRARIES)
-  target_link_libraries(xplicit ${VTK_LIBRARIES} ${LUA_LIBRARIES} luabind qscintilla2 ${QT_LIBRARIES})
+  target_link_libraries(xplicit ${VTK_LIBRARIES} ${LUA_LIBRARIES} QVTK luabind qscintilla2 ${QT_LIBRARIES})
 else()
-  target_link_libraries(xplicit vtkHybrid ${LUA_LIBRARIES} luabind qscintilla2 ${QT_LIBRARIES})
+  target_link_libraries(xplicit vtkHybrid ${LUA_LIBRARIES} QVTK luabind qscintilla2 ${QT_LIBRARIES})
 endif()

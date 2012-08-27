@@ -1,25 +1,26 @@
 /*
-    This file is part of perfusionkit.
-    Copyright 2010 Henning Meyer
+    This file is part of Xplicit.
+    Copyright 2012 Henning Meyer
 
-    perfusionkit is free software: you can redistribute it and/or modify
+    Xplicit is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    perfusionkit is distributed in the hope that it will be useful,
+    Xplicit is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with perfusionkit.  If not, see <http://www.gnu.org/licenses/>.
+    along with Xplicit.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "mainwindow.h"
 #include <QtGui>
 #include <boost/assign.hpp>
 #include <boost/foreach.hpp>
+#include "primitives.h"
 
 MainWindow::MainWindow() {
   setupUi( this );
@@ -30,7 +31,7 @@ MainWindow::~MainWindow() {
 
 
 
-void MainWindow::on_actionAbout_triggered() {
+void MainWindow::on_action_About_triggered() {
      QMessageBox::about(this, tr("About Xplicit"),
              tr("C++/VTK based Scripting Implicit CAD\n\n")+
                  
@@ -52,12 +53,17 @@ void MainWindow::on_actionAbout_triggered() {
              );
 }
 
-void MainWindow::on_actionExit_triggered() {
+void MainWindow::on_action_Quit_triggered() {
   qApp->exit();
 }
 
 
-void MainWindow::on_actionOpenFile_triggered() {
+void MainWindow::on_action_Compile_triggered() {
+  Sphere s(1);
+  implicitView->setFunction( s.getFunction() );
+}
+
+void MainWindow::on_action_OpenFile_triggered() {
   QStringList fnames = QFileDialog::getOpenFileNames(
     this,
     tr("Select one or more files to open"),
@@ -66,7 +72,7 @@ void MainWindow::on_actionOpenFile_triggered() {
 }
 
 
-void MainWindow::on_actionSaveProject_triggered() {
+void MainWindow::on_action_SaveProject_triggered() {
   QString pname;
   if (pname.isEmpty()) pname = "./unnamed.xplct";
   pname = QFileDialog::getSaveFileName( this,
@@ -78,7 +84,7 @@ void MainWindow::on_actionSaveProject_triggered() {
   }
 }
 
-void MainWindow::on_actionOpenProject_triggered() {
+void MainWindow::on_action_OpenProject_triggered() {
   QString pname = QFileDialog::getOpenFileName( this,
     tr("Open"),
     "./unnamed.xplct",
@@ -88,5 +94,10 @@ void MainWindow::on_actionOpenProject_triggered() {
   }
 }
 
+void MainWindow::setFile(const QString &name) {
+  if (!name.isEmpty()) {
+    // Todo: LOAD
+  }
+}
 
 

@@ -37,7 +37,7 @@
 void DisplayMesh(vtkAlgorithmOutput *image);
 void DisplayImage(vtkAlgorithmOutput *image);
 
-int main (int argc, char *argv[])
+int main_ (int argc, char *argv[])
 {
   luatest();
   vtkSmartPointer<vtkSphere> sphere = 

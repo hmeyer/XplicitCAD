@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>qtmium</string>
+   <string>Xplicit</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -30,6 +30,17 @@
         </property>
         <property name="whatsThis">
          <string/>
+        </property>
+       </widget>
+       <widget class="ImplicitWidget" name="implicitView" native="true">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>5</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
        </widget>
       </widget>
@@ -73,7 +84,7 @@
     <addaction name="action_Save"/>
     <addaction name="actionSave_as"/>
     <addaction name="actionE_xport_STL"/>
-    <addaction name="action_Close"/>
+    <addaction name="action_Quit"/>
    </widget>
    <widget class="QMenu" name="menuCode">
     <property name="title">
@@ -92,7 +103,7 @@
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="action_Close">
+  <action name="action_Quit">
    <property name="text">
     <string>&amp;Quit</string>
    </property>
@@ -139,7 +150,7 @@
   </action>
   <action name="actionE_xport_STL">
    <property name="text">
-    <string>&amp;Export STL</string>
+    <string>E&amp;xport STL</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+E</string>
@@ -166,25 +177,14 @@
    <class>QsciScintilla</class>
    <extends>QFrame</extends>
    <header>Qsci/qsciscintilla.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ImplicitWidget</class>
+   <extends>QWidget</extends>
+   <header>implicitwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>action_Close</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

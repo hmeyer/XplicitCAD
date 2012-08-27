@@ -35,13 +35,15 @@ class MainWindow : public QMainWindow, private Ui_MainWindow
     ~MainWindow();
     
  public slots:
-      void on_actionOpenFile_triggered();
-      void on_actionExit_triggered();
-      void on_actionAbout_triggered();
+      void on_action_OpenFile_triggered();
+      void on_action_Quit_triggered();
+      void on_action_Compile_triggered();
+      void on_action_About_triggered();
      
-      void on_actionSaveProject_triggered();
-      void on_actionOpenProject_triggered();
+      void on_action_SaveProject_triggered();
+      void on_action_OpenProject_triggered();
 
+      void setFile(const QString &name);
  protected:
  private:
 };
