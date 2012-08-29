@@ -4,12 +4,13 @@
 #include <memory>
 #include <vtkImplicitFunction.h>
 #include <vtkSmartPointer.h>
+#include <boost/scoped_ptr.hpp>
 
 class vtkSphere;
 
 class Primitive {
 public:
-    typedef std::auto_ptr<Primitive> Pointer;
+    typedef boost::scoped_ptr<Primitive> Pointer;
     virtual vtkImplicitFunction *getFunction(void) const {return m_func;}
 
 protected:
@@ -18,7 +19,7 @@ protected:
 
 class Sphere : public Primitive {
 public:
-	typedef std::auto_ptr<Sphere> Pointer;
+	typedef boost::scoped_ptr<Sphere> Pointer;
 	Sphere(double r);
 };
 

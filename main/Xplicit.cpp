@@ -39,7 +39,6 @@ void DisplayImage(vtkAlgorithmOutput *image);
 
 int main_ (int argc, char *argv[])
 {
-  luatest();
   vtkSmartPointer<vtkSphere> sphere = 
     vtkSmartPointer<vtkSphere>::New();
   sphere->SetCenter(0.3,0,0);

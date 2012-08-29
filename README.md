@@ -1,5 +1,5 @@
-Xplicit
-=======
+XplicitCAD
+==========
 
 C++ / VTK approach to Implicit CAD, heavily inspired by [ImplicitCAD](https://github.com/colah/ImplicitCAD). Xplicit aims to copy most of the nice features and genuis ideas from [colah](http://christopherolah.wordpress.com/2011/11/06/manipulation-of-implicit-functions-with-an-eye-on-cad/), and use them in conjunction with VTKs fast meshing and visualization framework.
 

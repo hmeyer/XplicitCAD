@@ -1,8 +1,8 @@
 /*
-    This file is part of Xplicit.
+    This file is part of XplicitCAD.
     Copyright 2012 Henning Meyer
 
-    Xplicit is free software: you can redistribute it and/or modify
+    XplicitCAD is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -13,17 +13,22 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Xplicit.  If not, see <http://www.gnu.org/licenses/>.
+    along with XplicitCAD.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "mainwindow.h"
 #include <QtGui>
-#include <boost/assign.hpp>
-#include <boost/foreach.hpp>
 #include "primitives.h"
+#include "luabridge.h"
+#include <Qsci/qscilexerlua.h>
 
 MainWindow::MainWindow() {
   setupUi( this );
+  sourceLexer.reset(new QsciLexerLua());
+  sourceEdit->setLexer( sourceLexer.get() );
+  sourceEdit->setAutoIndent(true);
+  sourceEdit->setBraceMatching(QsciScintilla::SloppyBraceMatch);
+  sourceEdit->setIndentationGuides(true);
 }
 
 MainWindow::~MainWindow() {
@@ -61,6 +66,10 @@ void MainWindow::on_action_Quit_triggered() {
 void MainWindow::on_action_Compile_triggered() {
   Sphere s(1);
   implicitView->setFunction( s.getFunction() );
+  LuaBridge l;
+  std::string log;
+  l.evaluate( sourceEdit->text().toStdString(), log);
+  consoleEdit->setPlainText( QString::fromStdString(log) );
 }
 
 void MainWindow::on_action_OpenFile_triggered() {

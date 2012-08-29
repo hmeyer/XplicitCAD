@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
  
-PROJECT(xplicit)
+PROJECT(xplicitCAD)
 
 SET( xplicitSrc 
 	main/Xplicit.cpp
@@ -58,15 +58,18 @@ INCLUDE_DIRECTORIES(
 QT4_WRAP_UI( xplicitSrc ${UIS} )
 QT4_WRAP_CPP( xplicitSrc ${QVTKMocHeaders} )
 
+SET( fullSrc ${xplicitSrc} ${MOCSrcs})
  
 if (APPLE)
-  add_executable(xplicit MACOSX_BUNDLE ${xplicitSrc} ${MOCSrcs})
+  add_executable(xplicitCAD MACOSX_BUNDLE ${fullSrc})
 else()
-  add_executable(xplicit ${xplicitSrc} ${MOCSrcs})
+  add_executable(xplicitCAD ${fullSrc})
 endif()
  
+SET( fullLib  ${LUA_LIBRARIES} QVTK luabind qscintilla2 ${QT_LIBRARIES})
+
 if(VTK_LIBRARIES)
-  target_link_libraries(xplicit ${VTK_LIBRARIES} ${LUA_LIBRARIES} QVTK luabind qscintilla2 ${QT_LIBRARIES})
+  target_link_libraries(xplicitCAD ${VTK_LIBRARIES} ${fullLib})
 else()
-  target_link_libraries(xplicit vtkHybrid ${LUA_LIBRARIES} QVTK luabind qscintilla2 ${QT_LIBRARIES})
+  target_link_libraries(xplicitCAD vtkHybrid ${fullLib})
 endif()
