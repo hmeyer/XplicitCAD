@@ -7,7 +7,10 @@ SET( xplicitSrc
 	main/main.cpp
 	main/mainwindow.cpp
 	main/implicitwidget.cpp
-	primitives/primitives.cpp
+	primitives/primitive.cpp
+	primitives/sphere.cpp
+	primitives/boolean.cpp
+	primitives/boundingBox.cpp
 	lua/luabridge.cpp
 )
 

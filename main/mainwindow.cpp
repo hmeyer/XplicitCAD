@@ -18,7 +18,7 @@
 
 #include "mainwindow.h"
 #include <QtGui>
-#include "primitives.h"
+#include "sphere.h"
 #include "luabridge.h"
 #include <Qsci/qscilexerlua.h>
 

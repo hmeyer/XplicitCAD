@@ -1,29 +1,25 @@
 #ifndef PRIMITIVES_H
 #define PRIMITIVES_H
 
-#include <memory>
 #include <vtkImplicitFunction.h>
+#include <vtkBoundingBox.h>
 #include <vtkSmartPointer.h>
-#include <boost/scoped_ptr.hpp>
-
-class vtkSphere;
+#include "boundingBox.h"
+#include <boost/shared_ptr.hpp>
 
 class Primitive {
 public:
-    typedef boost::scoped_ptr<Primitive> Pointer;
+    typedef boost::shared_ptr<Primitive> Pointer;
+    Primitive();
+    Primitive(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax);
     virtual vtkImplicitFunction *getFunction(void) const {return m_func;}
+    virtual BoundingBox getBoundingBox() const { return m_bbox;}
+    virtual ~Primitive() {}
 
 protected:
     vtkSmartPointer< vtkImplicitFunction > m_func;
+    BoundingBox m_bbox;
 };
-
-class Sphere : public Primitive {
-public:
-	typedef boost::scoped_ptr<Sphere> Pointer;
-	Sphere(double r);
-};
-
-
 
 
 /*
