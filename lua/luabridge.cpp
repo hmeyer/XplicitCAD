@@ -34,20 +34,23 @@ using namespace std;
 
 class FDLogger {
   public:
-	FDLogger(int fd);
+	FDLogger();
 	~FDLogger();
 	void getLog(std::string &log);
 	int getFD() const { return m_pipe[1]; }	
 	void closeWriteEnd();
   protected:
-	int m_old_fd;
+	int m_old_fd1;
+	int m_old_fd2;
 	int m_pipe[2];
 };
 
-FDLogger::FDLogger(int fd) {
-	if ((m_old_fd = dup(fd))==-1) throw;
+FDLogger::FDLogger() {
+	if ((m_old_fd1 = dup(1))==-1) throw;
+	if ((m_old_fd2 = dup(2))==-1) throw;
 	if (pipe(m_pipe)) throw;
 	if (dup2(m_pipe[1], 1)==-1) throw;
+	if (dup2(m_pipe[1], 2)==-1) throw;
 }
 
 FDLogger::~FDLogger() {
@@ -59,7 +62,8 @@ void FDLogger::closeWriteEnd() {
 	if (m_pipe[1]) {
 		close(m_pipe[1]);
 		m_pipe[1]=0;
-		dup2(m_old_fd, 1);
+		dup2(m_old_fd1, 1);
+		dup2(m_old_fd2, 2);
 	}
 }
 
@@ -86,11 +90,12 @@ LuaBridge::~LuaBridge() {
 }
 
 int LuaBridge::evaluate(const std::string &code, std::string &logStr) {
-  FDLogger log(1);
+  FDLogger log;
   int result = luaL_dostring(
     m_state,
     code.c_str());
-  luaL_dostring( m_state, "io.flush()");
+  luaL_dostring( m_state, "io.flush()\nio.stderr.flush()");
+  fflush(NULL);
   log.closeWriteEnd();
   log.getLog( logStr );
   return result;
