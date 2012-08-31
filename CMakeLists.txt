@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
  
 PROJECT(xplicitCAD)
 
@@ -34,6 +35,9 @@ include(${VTK_USE_FILE})
 find_package(Lua51 REQUIRED)
 include_directories(${LUA_INCLUDE_DIR})
 
+find_package(QScintilla REQUIRED)
+include_directories(${QSCINTILLA_INCLUDE_DIR})
+
 SET(QT_MOC_EXECUTABLE ${VTK_QT_MOC_EXECUTABLE} CACHE FILEPATH "")
 SET(QT_UIC_EXECUTABLE ${VTK_QT_UIC_EXECUTABLE} CACHE FILEPATH "")
 SET(QT_QMAKE_EXECUTABLE ${VTK_QT_QMAKE_EXECUTABLE} CACHE FILEPATH "")
@@ -55,7 +59,6 @@ INCLUDE_DIRECTORIES(
 	${HeaderDirs}
   	${QT_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTCORE_INCLUDE_DIR}
 	${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}
-	${QWT_INCLUDE_DIR}
 )
 
 QT4_WRAP_UI( xplicitSrc ${UIS} )
@@ -69,7 +72,7 @@ else()
   add_executable(xplicitCAD ${fullSrc})
 endif()
  
-SET( fullLib  ${LUA_LIBRARIES} QVTK luabind qscintilla2 ${QT_LIBRARIES})
+SET( fullLib  ${LUA_LIBRARIES} QVTK luabind ${QT_LIBRARIES} ${QSCINTILLA_LIBRARY})
 
 if(VTK_LIBRARIES)
   target_link_libraries(xplicitCAD ${VTK_LIBRARIES} ${fullLib})

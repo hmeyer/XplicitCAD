@@ -12,6 +12,9 @@ Dependencies
 ------------
 
 * libvtk5-dev
+* libvtk5-qt4-dev
+* libluabind-dev
+* libqscintilla2-dev
 
 Issues
 ------
