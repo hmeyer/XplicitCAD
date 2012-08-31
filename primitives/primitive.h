@@ -15,8 +15,12 @@ public:
     virtual vtkImplicitFunction *getFunction(void) const {return m_func;}
     virtual BoundingBox getBoundingBox() const { return m_bbox;}
     virtual ~Primitive() {}
+    Pointer copy() const;
 
 protected:
+    virtual Pointer getCopy() const = 0;
+    Primitive(const Primitive &other);
+    void copyTransform(const Primitive &source);
     vtkSmartPointer< vtkImplicitFunction > m_func;
     BoundingBox m_bbox;
 };

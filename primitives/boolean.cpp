@@ -10,7 +10,7 @@ Boolean::Boolean(Primitive::Pointer object, int operationType) {
 }
 
 void Boolean::addObject(Primitive::Pointer object) {
-	dynamic_cast<vtkImplicitBoolean&>(*m_func).AddFunction(object->getFunction());
+	vtkImplicitBoolean::SafeDownCast(m_func)->AddFunction(object->getFunction());
 	m_children.push_back(object);
 }
 

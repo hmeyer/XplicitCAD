@@ -6,6 +6,8 @@
 class Sphere : public Primitive {
 public:
 	Sphere(double r);
+protected:
+    virtual Pointer getCopy() const;
 };
 
 #endif
