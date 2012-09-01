@@ -2,6 +2,10 @@
 #include <vtkSphere.h>
 #include <boost/make_shared.hpp>
 
+Sphere::Pointer MakeSphere(double r) {
+	return boost::make_shared<Sphere>(r);
+}
+
 Sphere::Sphere(double r):Primitive(-r,r,-r,r,-r,r) {
 	vtkSmartPointer<vtkSphere> m = vtkSmartPointer<vtkSphere>::New();	
 	m->SetRadius( r );

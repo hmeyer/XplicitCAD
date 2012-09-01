@@ -10,6 +10,7 @@
 class Primitive {
 public:
     typedef boost::shared_ptr<Primitive> Pointer;
+    typedef boost::shared_ptr<const Primitive> Const_Pointer;
     Primitive();
     Primitive(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax);
     virtual vtkImplicitFunction *getFunction(void) const {return m_func;}

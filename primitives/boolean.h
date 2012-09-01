@@ -7,29 +7,45 @@
 class Boolean : public Primitive {
 public:
     	typedef boost::shared_ptr<Boolean> Pointer;
-	Boolean(Primitive::Pointer object, int operationType=0);
-	void addObject(Primitive::Pointer object);
+	Boolean(int operationType=0);
+	Boolean(Primitive::Const_Pointer object1, Primitive::Const_Pointer object2, int operationType=0);
+	void addObject(Primitive::Const_Pointer object);
     	virtual BoundingBox getBoundingBox() const = 0;
 	virtual Primitive::Pointer getCopy() const;
 protected:
-	std::list<Primitive::Pointer> m_children;
+    	virtual Boolean::Pointer getCopyBase() const = 0;
+	std::list<Primitive::Const_Pointer> m_children;
 };
 
 class Union : public Boolean {
 public:
-	Union(Primitive::Pointer object);
+	Union();
+	Union(Primitive::Pointer object1, Primitive::Pointer object2);
     	virtual BoundingBox getBoundingBox() const;
+protected:
+    	virtual Boolean::Pointer getCopyBase() const;
 }; 
 
 class Intersection : public Boolean {
 public:
-	Intersection(Primitive::Pointer object);
+	Intersection();
+	Intersection(Primitive::Pointer object1, Primitive::Pointer object2);
     	virtual BoundingBox getBoundingBox() const;
+protected:
+    	virtual Boolean::Pointer getCopyBase() const;
 }; 
+
 class Difference : public Boolean {
 public:
-	Difference(Primitive::Pointer object);
+	Difference();
+	Difference(Primitive::Pointer object1, Primitive::Pointer object2);
     	virtual BoundingBox getBoundingBox() const;
+protected:
+    	virtual Boolean::Pointer getCopyBase() const;
 }; 
+
+Boolean::Pointer MakeUnion(Primitive::Pointer object1, Primitive::Pointer object2);
+Boolean::Pointer MakeIntersection(Primitive::Pointer object1, Primitive::Pointer object2);
+Boolean::Pointer MakeDifference(Primitive::Pointer object1, Primitive::Pointer object2);
 
 #endif

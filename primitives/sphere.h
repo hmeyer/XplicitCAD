@@ -5,9 +5,12 @@
 
 class Sphere : public Primitive {
 public:
+    	typedef boost::shared_ptr<Sphere> Pointer;
 	Sphere(double r);
 protected:
-    virtual Pointer getCopy() const;
+    virtual Primitive::Pointer getCopy() const;
 };
+
+Sphere::Pointer MakeSphere(double r);
 
 #endif

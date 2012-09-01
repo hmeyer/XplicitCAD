@@ -66,9 +66,9 @@ void MainWindow::on_action_Quit_triggered() {
 
 
 void MainWindow::on_action_Compile_triggered() {
-  Primitive::Pointer o = boost::make_shared<Sphere>(1);
-  Boolean::Pointer b = boost::make_shared<Intersection>(o->translate(0.5, 0, 0));
-  b->addObject( o->translate(-0.5, 0, 0) );
+  Primitive::Pointer o = MakeSphere(1);
+  Boolean::Pointer b = MakeIntersection(o->translate(0.5, 0, 0), o->translate(-0.5, 0, 0) );
+  b = MakeDifference(b->translate(0, 0, 0), o->translate(0, -0.5, 0) );
   implicitView->setFunction( b->getFunction() );
   LuaBridge l;
   std::string log;
