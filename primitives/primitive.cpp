@@ -10,6 +10,16 @@ Primitive::Primitive(const Primitive &other) {}
 Primitive::Pointer Primitive::copy() const {
 	Pointer cp = getCopy();
 	cp->copyTransform(*this);
+	return cp;
+}
+
+Primitive::Pointer Primitive::translate(double x, double y, double z) const {
+	Pointer translated = copy();
+	vtkSmartPointer<vtkTransform> trans = vtkTransform::SafeDownCast(translated->getFunction()->GetTransform());
+	if (!trans) trans = vtkSmartPointer<vtkTransform>::New();
+	trans->Translate(x,y,z);
+	translated->getFunction()->SetTransform(trans);
+	return translated;
 }
 
 void Primitive::copyTransform(const Primitive &source) {

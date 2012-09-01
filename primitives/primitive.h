@@ -16,6 +16,7 @@ public:
     virtual BoundingBox getBoundingBox() const { return m_bbox;}
     virtual ~Primitive() {}
     Pointer copy() const;
+    Pointer translate(double x, double y, double z) const;
 
 protected:
     virtual Pointer getCopy() const = 0;

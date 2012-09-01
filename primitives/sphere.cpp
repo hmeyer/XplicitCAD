@@ -11,5 +11,6 @@ Sphere::Sphere(double r):Primitive(-r,r,-r,r,-r,r) {
 Primitive::Pointer Sphere::getCopy() const {
 	double r = vtkSphere::SafeDownCast(m_func)->GetRadius();
 	Pointer cp = boost::make_shared<Sphere>(r);
+	return cp;
 }
 

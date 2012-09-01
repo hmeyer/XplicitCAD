@@ -19,8 +19,10 @@
 #include "mainwindow.h"
 #include <QtGui>
 #include "sphere.h"
+#include "boolean.h"
 #include "luabridge.h"
 #include <Qsci/qscilexerlua.h>
+#include <boost/make_shared.hpp>
 
 MainWindow::MainWindow() {
   setupUi( this );
@@ -64,8 +66,10 @@ void MainWindow::on_action_Quit_triggered() {
 
 
 void MainWindow::on_action_Compile_triggered() {
-  Sphere s(1);
-  implicitView->setFunction( s.getFunction() );
+  Primitive::Pointer o = boost::make_shared<Sphere>(1);
+  Boolean::Pointer b = boost::make_shared<Intersection>(o->translate(0.5, 0, 0));
+  b->addObject( o->translate(-0.5, 0, 0) );
+  implicitView->setFunction( b->getFunction() );
   LuaBridge l;
   std::string log;
   l.evaluate( sourceEdit->text().toStdString(), log);
