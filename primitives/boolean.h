@@ -2,47 +2,53 @@
 #define BOOLEAN_H
 
 #include "primitive.h"
+#include <vtkImplicitBoolean.h>
 #include <list>
+#include <boost/make_shared.hpp>
 
 class Boolean : public Primitive {
+protected:
+	typedef std::list<Primitive::Const_Pointer> PrimCon;
 public:
     	typedef boost::shared_ptr<Boolean> Pointer;
+    	typedef boost::shared_ptr<const Boolean> Const_Pointer;
 	Boolean(int operationType=0);
-	Boolean(Primitive::Const_Pointer object1, Primitive::Const_Pointer object2, int operationType=0);
+	Boolean(Primitive::Const_Pointer object1, Primitive::Const_Pointer object2, int operationType);
+	Boolean(const PrimCon &children, int operationType);
 	void addObject(Primitive::Const_Pointer object);
     	virtual BoundingBox getBoundingBox() const = 0;
-	virtual Primitive::Pointer getCopy() const;
 protected:
-    	virtual Boolean::Pointer getCopyBase() const = 0;
-	std::list<Primitive::Const_Pointer> m_children;
+	PrimCon m_children;
+	void copyChildren(Boolean::Const_Pointer other);
 };
 
-class Union : public Boolean {
+template <int operationType>
+class SpecificBoolean : public Boolean {
 public:
-	Union();
-	Union(Primitive::Pointer object1, Primitive::Pointer object2);
+	SpecificBoolean();
+	SpecificBoolean(Primitive::Pointer object1, Primitive::Pointer object2);
+	SpecificBoolean(const PrimCon &children);
     	virtual BoundingBox getBoundingBox() const;
+    	virtual Primitive::Pointer getCopy() const;
 protected:
-    	virtual Boolean::Pointer getCopyBase() const;
 }; 
 
-class Intersection : public Boolean {
-public:
-	Intersection();
-	Intersection(Primitive::Pointer object1, Primitive::Pointer object2);
-    	virtual BoundingBox getBoundingBox() const;
-protected:
-    	virtual Boolean::Pointer getCopyBase() const;
-}; 
+template<int operationType>
+SpecificBoolean<operationType>::SpecificBoolean():Boolean(operationType) {}
+template<int operationType>
+SpecificBoolean<operationType>::SpecificBoolean(Primitive::Pointer object1, Primitive::Pointer object2)
+	:Boolean(object1, object2, operationType) {}
+template<int operationType>
+SpecificBoolean<operationType>::SpecificBoolean(const PrimCon &children):Boolean(children, operationType) {}
+template<int operationType>
+BoundingBox SpecificBoolean<operationType>::getBoundingBox() const {}
+template<int operationType>
+Primitive::Pointer SpecificBoolean<operationType>::getCopy() const {
+	return boost::make_shared< SpecificBoolean<operationType> >(m_children); }
 
-class Difference : public Boolean {
-public:
-	Difference();
-	Difference(Primitive::Pointer object1, Primitive::Pointer object2);
-    	virtual BoundingBox getBoundingBox() const;
-protected:
-    	virtual Boolean::Pointer getCopyBase() const;
-}; 
+typedef SpecificBoolean<VTK_UNION> Union;
+typedef SpecificBoolean<VTK_INTERSECTION> Intersection;
+typedef SpecificBoolean<VTK_DIFFERENCE> Difference;
 
 Boolean::Pointer MakeUnion(Primitive::Pointer object1, Primitive::Pointer object2);
 Boolean::Pointer MakeIntersection(Primitive::Pointer object1, Primitive::Pointer object2);
