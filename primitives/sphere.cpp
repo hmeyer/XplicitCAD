@@ -1,11 +1,28 @@
 #include "sphere.h"
-#include <vtkSphere.h>
-#include <boost/make_shared.hpp>
+#include <vtkObjectFactory.h>
 
-Sphere::Pointer MakeSphere(double r) {
-	return boost::make_shared<Sphere>(r);
+
+template<>
+vtkStandardNewMacro( Sphere );
+
+Primitive::Pointer MakeSphere(double r) {
+	vtkSmartPointer< Sphere > sp = Sphere::New();
+	sp->SetRadius( r );
+	sp->updateBounds();
+	return sp;
 }
 
+template<> void Sphere::updateBounds() {
+	double r = GetRadius();
+	setBounds(-r,r,-r,r,-r,r);
+}
+
+template <> Primitive::Pointer Sphere::copyWithoutTransform() {
+	Primitive::Pointer cp = MakeSphere( this->GetRadius() );
+	return cp;
+}
+/*
+//template<>
 Sphere::Sphere(double r):Primitive(-r,r,-r,r,-r,r) {
 	vtkSmartPointer<vtkSphere> m = vtkSmartPointer<vtkSphere>::New();	
 	m->SetRadius( r );
@@ -17,4 +34,4 @@ Primitive::Pointer Sphere::getCopy() const {
 	Pointer cp = boost::make_shared<Sphere>(r);
 	return cp;
 }
-
+*/

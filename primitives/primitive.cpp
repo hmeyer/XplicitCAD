@@ -2,6 +2,13 @@
 #include <vtkTransform.h>
 
 Primitive::Primitive() {}
+void Primitive::setBounds(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax) {
+	m_bbox.SetBounds(xMin, xMax, yMin, yMax, zMin, zMax);
+	m_bbox.Inflate(0.03035);
+}
+BoundingBox Primitive::getBounds() const { return m_bbox;}
+/*
+Primitive::Primitive() {}
 Primitive::Primitive(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax)
 	:m_bbox(xMin,xMax,yMin,yMax,zMin,zMax) {}
 
@@ -21,11 +28,14 @@ Primitive::Pointer Primitive::translate(double x, double y, double z) const {
 	translated->getFunction()->SetTransform(trans);
 	return translated;
 }
+    	Primitive(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax)
+		:m_bbox(xMin,xMax,yMin,yMax,zMin,zMax) {}
 
 void Primitive::copyTransform(const Primitive &source) {
 	if (m_func) 
 		m_func->SetTransform( source.getFunction()->GetTransform() );
 }
+*/
 /*
 Primitive::Pointer Primitive::translate(double x, double y, double z) const {
 	

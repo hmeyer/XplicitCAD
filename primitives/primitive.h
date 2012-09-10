@@ -5,7 +5,57 @@
 #include <vtkBoundingBox.h>
 #include <vtkSmartPointer.h>
 #include "boundingBox.h"
-#include <boost/shared_ptr.hpp>
+#include <limits>
+
+class Primitive {
+public:
+	typedef vtkSmartPointer< vtkImplicitFunction > Pointer;
+	typedef vtkSmartPointer< const vtkImplicitFunction > Const_Pointer;
+	Primitive();
+    	virtual BoundingBox getBounds() const;
+	void setBounds(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax);
+	virtual void updateBounds() = 0;
+    	virtual Pointer copy() = 0;
+//    	virtual Pointer translate(double x, double y, double z) const = 0;
+protected:
+    	BoundingBox m_bbox;
+};
+
+template< class vtkImplicit >
+class VTK_FILTERING_EXPORT PrimitiveTemplate: public vtkImplicit, public Primitive {
+public:
+	PrimitiveTemplate() {}
+    	PrimitiveTemplate(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax)
+		:Primitive(xMin,xMax,yMin,yMax,zMin,zMax) {}
+	static PrimitiveTemplate *New();
+	virtual double EvaluateFunction(double x[3]);
+	virtual void EvaluateGradient(double x[3], double g[3]);
+	virtual void updateBounds();
+    	virtual Pointer copy();
+    	Pointer copyWithoutTransform();
+//    	virtual Pointer translate(double x, double y, double z) const;
+};
+
+template< class vtkImplicit >
+double PrimitiveTemplate< vtkImplicit >::EvaluateFunction(double x[3]) {
+	if (m_bbox.ContainsPoint(x)) return vtkImplicit::EvaluateFunction(x);
+	else return std::numeric_limits<double>::max();
+}
+
+template< class vtkImplicit >
+void PrimitiveTemplate< vtkImplicit >::EvaluateGradient(double x[3], double g[3]) {
+	if (m_bbox.ContainsPoint(x)) vtkImplicit::EvaluateGradient(x, g);
+	else { g[0] = g[1] = g[2] = 0; }
+}
+
+template< class vtkImplicit >
+Primitive::Pointer PrimitiveTemplate< vtkImplicit >::copy() {
+	Pointer cp = copyWithoutTransform();
+	cp->SetTransform( this->GetTransform() );
+	return cp;
+}
+
+/*
 
 class Primitive {
 public:
@@ -27,6 +77,7 @@ protected:
     BoundingBox m_bbox;
 };
 
+*/
 
 /*
 

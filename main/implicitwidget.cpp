@@ -36,6 +36,13 @@ ImplicitWidget::ImplicitWidget(QWidget* parent, Qt::WFlags f):
   QVTKWidget(parent, f),
   m_sampler(vtkSampleFunction::New())
 {
+  m_sampler->SetSampleDimensions(100,100,100);
+  m_sampler->SetOutputScalarTypeToFloat();
+  double value = 2.0;
+  double xmin = -value, xmax = value,
+    ymin = -value, ymax = value,
+    zmin = -value, zmax = value;
+  m_sampler->SetModelBounds(xmin, xmax, ymin, ymax, zmin, zmax);
   vtkSmartPointer<vtkContourFilter> contours = 
     vtkSmartPointer<vtkContourFilter>::New();
   contours->SetInputConnection(m_sampler->GetOutputPort());

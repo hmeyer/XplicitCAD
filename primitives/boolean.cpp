@@ -1,4 +1,40 @@
 #include "boolean.h"
+#include <vtkObjectFactory.h>
+#include <vtkImplicitFunctionCollection.h>
+
+template<>
+vtkStandardNewMacro( Boolean );
+
+Primitive::Pointer MakeBoolean(Primitive::Pointer a, Primitive::Pointer b, int operationType) {
+	vtkSmartPointer< Boolean > bf = Boolean::New();
+	bf->AddFunction(a);
+	bf->AddFunction(b);
+	bf->SetOperationType(operationType);
+	bf->updateBounds();
+	return bf;
+}
+
+Primitive::Pointer MakeUnion(Primitive::Pointer a, Primitive::Pointer b) { return MakeBoolean(a,b,VTK_UNION); }
+Primitive::Pointer MakeIntersection(Primitive::Pointer a, Primitive::Pointer b) { return MakeBoolean(a,b,VTK_INTERSECTION); }
+Primitive::Pointer MakeDifference(Primitive::Pointer a, Primitive::Pointer b) { return MakeBoolean(a,b,VTK_DIFFERENCE); }
+
+template<> void Boolean::updateBounds() {
+	setBounds(-100,100,-100,100,-100,100);
+}
+
+template <> Primitive::Pointer Boolean::copyWithoutTransform() {
+	vtkSmartPointer< Boolean > cp = Boolean::New();
+	vtkImplicitFunctionCollection *fc = this->GetFunction();
+	vtkImplicitFunction *f;
+	while(f = fc->GetNextItem()) {
+		cp->AddFunction(f);
+	}
+	cp->SetOperationType(this->GetOperationType());
+	cp->updateBounds();
+	return cp;
+}
+/*
+
 #include <vtkImplicitBoolean.h>
 #include <boost/make_shared.hpp>
 #include <boost/foreach.hpp>
@@ -43,3 +79,5 @@ Boolean::Pointer MakeIntersection(Primitive::Pointer object1, Primitive::Pointer
 Boolean::Pointer MakeDifference(Primitive::Pointer object1, Primitive::Pointer object2) {
 	return boost::make_shared<Difference>(object1, object2);
 }
+
+*/

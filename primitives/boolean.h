@@ -3,6 +3,18 @@
 
 #include "primitive.h"
 #include <vtkImplicitBoolean.h>
+
+typedef PrimitiveTemplate<vtkImplicitBoolean> Boolean;
+template<> void Boolean::updateBounds();
+template <> Primitive::Pointer Boolean::copyWithoutTransform();
+
+Primitive::Pointer MakeUnion(Primitive::Pointer a, Primitive::Pointer b);
+Primitive::Pointer MakeIntersection(Primitive::Pointer a, Primitive::Pointer b);
+Primitive::Pointer MakeDifference(Primitive::Pointer a, Primitive::Pointer b);
+/*
+
+#include "primitive.h"
+#include <vtkImplicitBoolean.h>
 #include <list>
 #include <boost/make_shared.hpp>
 
@@ -53,5 +65,6 @@ typedef SpecificBoolean<VTK_DIFFERENCE> Difference;
 Boolean::Pointer MakeUnion(Primitive::Pointer object1, Primitive::Pointer object2);
 Boolean::Pointer MakeIntersection(Primitive::Pointer object1, Primitive::Pointer object2);
 Boolean::Pointer MakeDifference(Primitive::Pointer object1, Primitive::Pointer object2);
+*/
 
 #endif
