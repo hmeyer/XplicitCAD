@@ -7,6 +7,7 @@ void Primitive::setBounds(double xMin, double xMax, double yMin, double yMax, do
 	m_bbox.Inflate(0.03035);
 }
 BoundingBox Primitive::getBounds() const { return m_bbox;}
+
 /*
 Primitive::Primitive() {}
 Primitive::Primitive(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax)

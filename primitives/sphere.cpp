@@ -17,8 +17,8 @@ template<> void Sphere::updateBounds() {
 	setBounds(-r,r,-r,r,-r,r);
 }
 
-template <> Primitive::Pointer Sphere::copyWithoutTransform() {
-	Primitive::Pointer cp = MakeSphere( this->GetRadius() );
+template <> Primitive::Pointer Sphere::copyWithoutTransform() const {
+	Primitive::Pointer cp = MakeSphere( vtkThis()->GetRadius() );
 	return cp;
 }
 /*

@@ -7,8 +7,8 @@ vtkStandardNewMacro( Boolean );
 
 Primitive::Pointer MakeBoolean(Primitive::Pointer a, Primitive::Pointer b, int operationType) {
 	vtkSmartPointer< Boolean > bf = Boolean::New();
-	bf->AddFunction(a);
-	bf->AddFunction(b);
+	bf->AddFunction(a->vtkThis());
+	bf->AddFunction(b->vtkThis());
 	bf->SetOperationType(operationType);
 	bf->updateBounds();
 	return bf;
@@ -22,14 +22,14 @@ template<> void Boolean::updateBounds() {
 	setBounds(-100,100,-100,100,-100,100);
 }
 
-template <> Primitive::Pointer Boolean::copyWithoutTransform() {
+template <> Primitive::Pointer Boolean::copyWithoutTransform() const {
 	vtkSmartPointer< Boolean > cp = Boolean::New();
-	vtkImplicitFunctionCollection *fc = this->GetFunction();
+	vtkImplicitFunctionCollection *fc = vtkThis()->GetFunction();
 	vtkImplicitFunction *f;
 	while(f = fc->GetNextItem()) {
 		cp->AddFunction(f);
 	}
-	cp->SetOperationType(this->GetOperationType());
+	cp->SetOperationType(vtkThis()->GetOperationType());
 	cp->updateBounds();
 	return cp;
 }
