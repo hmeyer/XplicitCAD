@@ -18,6 +18,7 @@ public:
     	virtual Pointer copy() const;
     	virtual Pointer copyWithoutTransform() const = 0;
     	Pointer translate(double x, double y, double z) const;
+    	Pointer scale(double x, double y=std::numeric_limits< double >::quiet_NaN(), double z=std::numeric_limits< double >::quiet_NaN()) const;
 protected:
     	BoundingBox m_bbox;
 };

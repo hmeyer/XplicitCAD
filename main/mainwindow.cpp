@@ -68,7 +68,7 @@ void MainWindow::on_action_Quit_triggered() {
 void MainWindow::on_action_Compile_triggered() {
   Primitive::Pointer o = MakeSphere(1);
   Boolean::Pointer b = MakeIntersection(o->translate(0.5, 0, 0), o->translate(-0.5, 0, 0) );
-  b = MakeDifference(b, o->translate(0, -0.5, 0) );
+  b = MakeDifference(b, o->scale(0.4)->translate(0.1, 0, -0.5) );
   implicitView->setFunction( b );
   LuaBridge l;
   std::string log;
