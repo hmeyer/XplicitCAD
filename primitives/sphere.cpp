@@ -1,12 +1,13 @@
 #include "sphere.h"
 #include <vtkObjectFactory.h>
 
-
 template<>
-vtkStandardNewMacro( Sphere );
+Sphere *Sphere::New() {
+	return new Sphere();
+}
 
 Primitive::Pointer MakeSphere(double r) {
-	vtkSmartPointer< Sphere > sp = Sphere::New();
+	Sphere *sp = Sphere::New();
 	sp->SetRadius( r );
 	sp->updateBounds();
 	return sp;

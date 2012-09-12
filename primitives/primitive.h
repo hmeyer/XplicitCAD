@@ -8,7 +8,7 @@
 #include "boundingBox.h"
 #include <limits>
 
-class Primitive {
+class VTK_FILTERING_EXPORT Primitive : virtual public vtkImplicitFunction {
 public:
 	typedef Primitive* Pointer;
 	Primitive();
@@ -16,14 +16,13 @@ public:
 	void setBounds(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax);
 	virtual void updateBounds() = 0;
     	virtual Pointer copy() const = 0;
-    	virtual Pointer translate(double x, double y, double z) = 0;
-	vtkImplicitFunction *vtkThis(void) const { return const_cast<vtkImplicitFunction*>(dynamic_cast<const vtkImplicitFunction*>(this)); }
+    	Pointer translate(double x, double y, double z) const;
 protected:
     	BoundingBox m_bbox;
 };
 
 template< class vtkImplicit >
-class VTK_FILTERING_EXPORT PrimitiveTemplate: public vtkImplicit, public Primitive {
+class VTK_FILTERING_EXPORT PrimitiveTemplate: virtual public vtkImplicit, virtual public Primitive {
 public:
 	PrimitiveTemplate() {}
     	PrimitiveTemplate(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax)
@@ -34,7 +33,6 @@ public:
 	virtual void updateBounds();
     	virtual Pointer copy() const;
     	Pointer copyWithoutTransform() const;
-    	virtual Pointer translate(double x, double y, double z);
 	vtkImplicit *vtkThis(void) const { return const_cast<vtkImplicit*>(dynamic_cast<const vtkImplicit*>(this)); }
 };
 
@@ -53,18 +51,8 @@ void PrimitiveTemplate< vtkImplicit >::EvaluateGradient(double x[3], double g[3]
 template< class vtkImplicit >
 Primitive::Pointer PrimitiveTemplate< vtkImplicit >::copy() const {
 	Pointer cp = copyWithoutTransform();
-	cp->vtkThis()->SetTransform( vtkThis()->GetTransform() );
+	cp->SetTransform( vtkThis()->GetTransform() );
 	return cp;
-}
-
-template< class vtkImplicit >
-Primitive::Pointer PrimitiveTemplate< vtkImplicit >::translate(double x, double y, double z) {
-	Pointer translated = this->copy();
-	vtkSmartPointer<vtkTransform> trans = vtkTransform::SafeDownCast(translated->vtkThis()->GetTransform());
-	if (!trans) trans = vtkSmartPointer<vtkTransform>::New();
-	trans->Translate(x,y,z);
-	translated->vtkThis()->SetTransform(trans);
-	return translated;
 }
 
 

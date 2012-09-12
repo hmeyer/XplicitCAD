@@ -3,12 +3,14 @@
 #include <vtkImplicitFunctionCollection.h>
 
 template<>
-vtkStandardNewMacro( Boolean );
+Boolean *Boolean::New() {
+	return new Boolean();
+}
 
 Primitive::Pointer MakeBoolean(Primitive::Pointer a, Primitive::Pointer b, int operationType) {
-	vtkSmartPointer< Boolean > bf = Boolean::New();
-	bf->AddFunction(a->vtkThis());
-	bf->AddFunction(b->vtkThis());
+	Boolean *bf = Boolean::New();
+	bf->AddFunction(a);
+	bf->AddFunction(b);
 	bf->SetOperationType(operationType);
 	bf->updateBounds();
 	return bf;
@@ -23,8 +25,8 @@ template<> void Boolean::updateBounds() {
 }
 
 template <> Primitive::Pointer Boolean::copyWithoutTransform() const {
-	vtkSmartPointer< Boolean > cp = Boolean::New();
-	vtkImplicitFunctionCollection *fc = vtkThis()->GetFunction();
+	Boolean *cp = Boolean::New();
+	vtkImplicitFunctionCollection *fc = const_cast<Boolean*>(this)->GetFunction();
 	vtkImplicitFunction *f;
 	while(f = fc->GetNextItem()) {
 		cp->AddFunction(f);

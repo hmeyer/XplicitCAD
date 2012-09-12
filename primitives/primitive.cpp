@@ -2,11 +2,23 @@
 #include <vtkTransform.h>
 
 Primitive::Primitive() {}
+
 void Primitive::setBounds(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax) {
 	m_bbox.SetBounds(xMin, xMax, yMin, yMax, zMin, zMax);
 	m_bbox.Inflate(0.03035);
 }
+
 BoundingBox Primitive::getBounds() const { return m_bbox;}
+
+Primitive::Pointer Primitive::translate(double x, double y, double z) const {
+	Pointer translated = this->copy();
+	vtkSmartPointer<vtkTransform> trans = vtkTransform::SafeDownCast(translated->GetTransform());
+	if (!trans) trans = vtkSmartPointer<vtkTransform>::New();
+	trans->Translate(x,y,z);
+	translated->SetTransform(trans);
+	return translated;
+}
+
 
 /*
 Primitive::Primitive() {}
