@@ -15,7 +15,8 @@ public:
     	virtual BoundingBox getBounds() const;
 	void setBounds(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax);
 	virtual void updateBounds() = 0;
-    	virtual Pointer copy() const = 0;
+    	virtual Pointer copy() const;
+    	virtual Pointer copyWithoutTransform() const = 0;
     	Pointer translate(double x, double y, double z) const;
 protected:
     	BoundingBox m_bbox;
@@ -31,9 +32,7 @@ public:
 	virtual double EvaluateFunction(double x[3]);
 	virtual void EvaluateGradient(double x[3], double g[3]);
 	virtual void updateBounds();
-    	virtual Pointer copy() const;
-    	Pointer copyWithoutTransform() const;
-	vtkImplicit *vtkThis(void) const { return const_cast<vtkImplicit*>(dynamic_cast<const vtkImplicit*>(this)); }
+    	virtual Pointer copyWithoutTransform() const;
 };
 
 template< class vtkImplicit >
@@ -48,12 +47,7 @@ void PrimitiveTemplate< vtkImplicit >::EvaluateGradient(double x[3], double g[3]
 	else { g[0] = g[1] = g[2] = 0; }
 }
 
-template< class vtkImplicit >
-Primitive::Pointer PrimitiveTemplate< vtkImplicit >::copy() const {
-	Pointer cp = copyWithoutTransform();
-	cp->SetTransform( vtkThis()->GetTransform() );
-	return cp;
-}
+
 
 
 

@@ -19,7 +19,7 @@ template<> void Sphere::updateBounds() {
 }
 
 template <> Primitive::Pointer Sphere::copyWithoutTransform() const {
-	Primitive::Pointer cp = MakeSphere( vtkThis()->GetRadius() );
+	Primitive::Pointer cp = MakeSphere( const_cast<Sphere*>(this)->GetRadius() );
 	return cp;
 }
 /*

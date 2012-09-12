@@ -19,6 +19,11 @@ Primitive::Pointer Primitive::translate(double x, double y, double z) const {
 	return translated;
 }
 
+Primitive::Pointer Primitive::copy() const {
+	Pointer cp = copyWithoutTransform();
+	cp->SetTransform( const_cast<Primitive*>(this)->GetTransform() );
+	return cp;
+}
 
 /*
 Primitive::Primitive() {}

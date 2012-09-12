@@ -31,7 +31,7 @@ template <> Primitive::Pointer Boolean::copyWithoutTransform() const {
 	while(f = fc->GetNextItem()) {
 		cp->AddFunction(f);
 	}
-	cp->SetOperationType(vtkThis()->GetOperationType());
+	cp->SetOperationType( const_cast<Boolean*>(this)->GetOperationType());
 	cp->updateBounds();
 	return cp;
 }
