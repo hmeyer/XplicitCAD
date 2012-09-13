@@ -1,2 +1,5 @@
 release
+build
 *.swp
+*~
+*.kdev4
