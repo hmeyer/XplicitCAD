@@ -7,7 +7,6 @@ PROJECT(xplicitCAD)
 
 
 SET( xplicitSrc 
-	main/Xplicit.cpp
 	main/main.cpp
 	main/mainwindow.cpp
 	main/implicitMesh.cpp
