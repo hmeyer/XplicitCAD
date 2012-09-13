@@ -16,26 +16,29 @@
     along with XplicitCAD.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef IMPLICITWIDGET_H
-#define IMPLICITWIDGET_H
+#ifndef IMPLICITMAP_H
+#define IMPLICITMAP_H
 
 #include <QVTKWidget.h>
+#include <boost/shared_ptr.hpp>
+#include <vtkSmartPointer.h>
 
+class vtkImageReslice;
 class vtkSampleFunction;
-class vtkImplicitFunction;
+class Primitive;
 
 
 /// QT-Widget displaying an Implicit Function
-class ImplicitWidget : public QVTKWidget
+class ImplicitMap : public QVTKWidget
 {
   public:
-  ImplicitWidget(QWidget* parent = NULL, Qt::WFlags f = 0);
-  ~ImplicitWidget();  
-  void setFunction(vtkImplicitFunction *func);
+  ImplicitMap(QWidget* parent = NULL, Qt::WFlags f = 0);
+  ~ImplicitMap();  
+  void setSampler(vtkSmartPointer<vtkSampleFunction> sampler);
   virtual void resizeEvent( QResizeEvent * event );
   
   protected:
-  vtkSampleFunction *m_sampler; 
+  vtkSmartPointer<vtkImageReslice> m_reslice; 
 };
 
 #endif // IMPLICITWIDGET_H
