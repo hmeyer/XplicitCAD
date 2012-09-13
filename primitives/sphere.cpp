@@ -1,16 +1,15 @@
 #include "sphere.h"
+#include <boost/make_shared.hpp>
 #include <vtkObjectFactory.h>
 
 template<>
-Sphere *Sphere::New() {
-	return new Sphere();
-}
+vtkStandardNewMacro( Sphere );
 
-Primitive::Pointer MakeSphere(double r) {
-	Sphere *sp = Sphere::New();
+Sphere::PTPointer MakeSphere(double r) {
+	vtkSmartPointer< Sphere > sp(Sphere::New());
 	sp->SetRadius( r );
 	sp->updateBounds();
-	return sp;
+	return sp->smartP();
 }
 
 template<> void Sphere::updateBounds() {

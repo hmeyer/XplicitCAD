@@ -10,7 +10,8 @@ SET( xplicitSrc
 	main/Xplicit.cpp
 	main/main.cpp
 	main/mainwindow.cpp
-	main/implicitwidget.cpp
+	main/implicitMesh.cpp
+	main/implicitMap.cpp
 	primitives/primitive.cpp
 	primitives/sphere.cpp
 	primitives/boolean.cpp

@@ -31,6 +31,7 @@ MainWindow::MainWindow() {
   sourceEdit->setAutoIndent(true);
   sourceEdit->setBraceMatching(QsciScintilla::SloppyBraceMatch);
   sourceEdit->setIndentationGuides(true);
+  dockMap->setVisible(false);
 }
 
 MainWindow::~MainWindow() {
@@ -66,10 +67,16 @@ void MainWindow::on_action_Quit_triggered() {
 
 
 void MainWindow::on_action_Compile_triggered() {
-  Primitive::Pointer o = MakeSphere(1);
-  Boolean::Pointer b = MakeIntersection(o->translate(0.5, 0, 0), o->translate(-0.5, 0, 0) );
-  b = MakeDifference(b, o->scale(0.4)->translate(0.1, 0, -0.5) );
-  implicitView->setFunction( b );
+  {
+    Primitive::Pointer o = MakeSphere(1);
+    Primitive::Pointer b = MakeIntersection(o->translate(0.5, 0, 0), o->translate(-0.5, 0, 0) );
+    b = MakeDifference(b, o->scale(0.4)->translate(0.1, 0, -0.5) );
+//    Primitive::Pointer u = MakeUnion(b, b->translate(.5,0,0));//b->rotateY(0.5) );
+//    o = o->scale(1)->scale(2)->rotateX(1);
+    implicitView->setFunction( b );
+    implicitMap->setSampler( implicitView->getSampler() );
+    o.reset();
+  }
   LuaBridge l;
   std::string log;
   l.evaluate( sourceEdit->text().toStdString(), log);

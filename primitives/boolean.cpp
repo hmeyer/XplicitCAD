@@ -3,29 +3,28 @@
 #include <vtkImplicitFunctionCollection.h>
 
 template<>
-Boolean *Boolean::New() {
-	return new Boolean();
-}
+vtkStandardNewMacro( Boolean );
 
-Primitive::Pointer MakeBoolean(Primitive::Pointer a, Primitive::Pointer b, int operationType) {
-	Boolean *bf = Boolean::New();
-	bf->AddFunction(a);
-	bf->AddFunction(b);
+
+Boolean::Pointer MakeBoolean(Primitive::Pointer a, Primitive::Pointer b, int operationType) {
+	vtkSmartPointer< Boolean > bf(Boolean::New());
+	bf->AddFunction(a->vtk());
+	bf->AddFunction(b->vtk());
 	bf->SetOperationType(operationType);
 	bf->updateBounds();
-	return bf;
+	return bf->smartP();
 }
 
-Primitive::Pointer MakeUnion(Primitive::Pointer a, Primitive::Pointer b) { return MakeBoolean(a,b,VTK_UNION); }
-Primitive::Pointer MakeIntersection(Primitive::Pointer a, Primitive::Pointer b) { return MakeBoolean(a,b,VTK_INTERSECTION); }
-Primitive::Pointer MakeDifference(Primitive::Pointer a, Primitive::Pointer b) { return MakeBoolean(a,b,VTK_DIFFERENCE); }
+Boolean::Pointer MakeUnion(Primitive::Pointer a, Primitive::Pointer b) { return MakeBoolean(a,b,VTK_UNION); }
+Boolean::Pointer MakeIntersection(Primitive::Pointer a, Primitive::Pointer b) { return MakeBoolean(a,b,VTK_INTERSECTION); }
+Boolean::Pointer MakeDifference(Primitive::Pointer a, Primitive::Pointer b) { return MakeBoolean(a,b,VTK_DIFFERENCE); }
 
 template<> void Boolean::updateBounds() {
 	setBounds(-100,100,-100,100,-100,100);
 }
 
 template <> Primitive::Pointer Boolean::copyWithoutTransform() const {
-	Boolean *cp = Boolean::New();
+	vtkSmartPointer< Boolean > cp(Boolean::New());
 	vtkImplicitFunctionCollection *fc = const_cast<Boolean*>(this)->GetFunction();
 	vtkImplicitFunction *f;
 	while(f = fc->GetNextItem()) {
@@ -33,8 +32,9 @@ template <> Primitive::Pointer Boolean::copyWithoutTransform() const {
 	}
 	cp->SetOperationType( const_cast<Boolean*>(this)->GetOperationType());
 	cp->updateBounds();
-	return cp;
+	return cp->smartP();
 }
+
 /*
 
 #include <vtkImplicitBoolean.h>
