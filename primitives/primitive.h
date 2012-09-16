@@ -8,6 +8,7 @@
 #include "boundingBox.h"
 #include <limits>
 #include <boost/shared_ptr.hpp>
+#include "debugging.h"
 
 class vtkImplicitFunction;
 class PrimitiveDeleter;
@@ -37,7 +38,7 @@ protected:
 class PrimitiveDeleter {
 public:
   void operator()(Primitive *p) {
-    std::cerr << "Deleter Called:" << p << " refcount:" << p->vtk()->GetReferenceCount() << std::endl;
+    debugger << "Deleter Called:" << p << " refcount:" << p->vtk()->GetReferenceCount() << std::endl;
     p->vtk()->Delete();
   }
 };

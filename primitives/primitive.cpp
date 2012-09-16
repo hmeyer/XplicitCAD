@@ -2,17 +2,19 @@
 #include <vtkTransform.h>
 #include <vtkImplicitFunction.h>
 #include <boost/cast.hpp>
+#include "debugging.h"
+
 
 int objs=0;
 
 Primitive::Primitive() {
   objs++;
-  std::cerr << "Primitive():" << this << " " << objs << std::endl;
+  debugger << "Primitive():" << this << " " << objs << std::endl;
 }
 
 Primitive::~Primitive() {
   objs--;
-  std::cerr << "~Primitive():" << this << " " << objs << std::endl;
+  debugger << "~Primitive():" << this << " " << objs << std::endl;
 }
 
 const vtkImplicitFunction *Primitive::vtk() const {

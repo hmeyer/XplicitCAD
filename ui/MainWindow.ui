@@ -65,7 +65,7 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="ImplicitWidget" name="implicitView" native="true">
+         <widget class="ImplicitMesh" name="implicitView" native="true">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -100,7 +100,7 @@
             <height>10</height>
            </size>
           </property>
-          <widget class="ImplicitMapWidget" name="implicitMap"/>
+          <widget class="ImplicitMap" name="implicitMap"/>
          </widget>
         </item>
        </layout>
@@ -244,14 +244,14 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>ImplicitWidget</class>
+   <class>ImplicitMesh</class>
    <extends>QWidget</extends>
-   <header>implicitwidget.h</header>
+   <header>implicitMesh.h</header>
   </customwidget>
   <customwidget>
-   <class>ImplicitMapWidget</class>
+   <class>ImplicitMap</class>
    <extends>QWidget</extends>
-   <header>implicitMapWidget.h</header>
+   <header>implicitMap.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

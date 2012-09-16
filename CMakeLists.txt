@@ -15,6 +15,7 @@ SET( xplicitSrc
 	primitives/sphere.cpp
 	primitives/boolean.cpp
 	primitives/boundingBox.cpp
+	misc/debugging.cpp
 	lua/luabridge.cpp
 )
 
@@ -22,6 +23,7 @@ SET( HeaderDirs
 	main
 	lua
 	primitives
+	misc
 )
 
 SET( UIS 
