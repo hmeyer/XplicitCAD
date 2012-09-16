@@ -5,7 +5,7 @@
 template<>
 vtkStandardNewMacro( Sphere );
 
-Sphere::PTPointer MakeSphere(double r) {
+Sphere::Pointer MakeSphere(double r) {
 	vtkSmartPointer< Sphere > sp(new Sphere());
 	sp->SetRadius( r );
 	sp->updateBounds();
@@ -17,8 +17,8 @@ template<> void Sphere::updateBounds() {
 	setBounds(-r,r,-r,r,-r,r);
 }
 
-template <> Primitive::PPointer Sphere::copyWithoutTransform() const {
-	Sphere::PTPointer cp = MakeSphere( const_cast<Sphere*>(this)->GetRadius() );
+template <> Primitive::Pointer Sphere::copyWithoutTransform() const {
+	Sphere::Pointer cp = MakeSphere( const_cast<Sphere*>(this)->GetRadius() );
 	return cp;
 }
 /*

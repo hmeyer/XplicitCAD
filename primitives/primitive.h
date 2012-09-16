@@ -14,20 +14,20 @@ class PrimitiveDeleter;
 
 class VTK_FILTERING_EXPORT Primitive {
 public:
-	typedef boost::shared_ptr<Primitive> PPointer;
+	typedef boost::shared_ptr<Primitive> Pointer;
 	Primitive();
 	virtual ~Primitive();
     	virtual BoundingBox getBounds() const;
 	void setBounds(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax);
 	virtual void updateBounds() = 0;
-    	virtual Primitive::PPointer copy() const;
-    	virtual Primitive::PPointer copyWithoutTransform() const = 0;
-    	Primitive::PPointer translate(double x, double y, double z) const;
-    	Primitive::PPointer scale(double x, double y=std::numeric_limits< double >::quiet_NaN(), double z=std::numeric_limits< double >::quiet_NaN()) const;
-    	Primitive::PPointer rotateX(double a) const;
-    	Primitive::PPointer rotateY(double a) const;
-    	Primitive::PPointer rotateZ(double a) const;
-    	Primitive::PPointer rotateAxis(double a, double x, double y, double z) const;
+    	virtual Primitive::Pointer copy() const;
+    	virtual Primitive::Pointer copyWithoutTransform() const = 0;
+    	Primitive::Pointer translate(double x, double y, double z) const;
+    	Primitive::Pointer scale(double x, double y=std::numeric_limits< double >::quiet_NaN(), double z=std::numeric_limits< double >::quiet_NaN()) const;
+    	Primitive::Pointer rotateX(double a) const;
+    	Primitive::Pointer rotateY(double a) const;
+    	Primitive::Pointer rotateZ(double a) const;
+    	Primitive::Pointer rotateAxis(double a, double x, double y, double z) const;
 	const vtkImplicitFunction *vtk() const;
 	vtkImplicitFunction *vtk();
 protected:
@@ -46,7 +46,7 @@ public:
 template< class vtkImplicit >
 class VTK_FILTERING_EXPORT PrimitiveTemplate: public vtkImplicit, public Primitive {
 public:
-	typedef boost::shared_ptr<PrimitiveTemplate> PTPointer;
+	typedef boost::shared_ptr<PrimitiveTemplate> Pointer;
 	PrimitiveTemplate() {}
     	PrimitiveTemplate(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax)
 		:Primitive(xMin,xMax,yMin,yMax,zMin,zMax) {}
@@ -54,8 +54,8 @@ public:
 	virtual double EvaluateFunction(double x[3]);
 	virtual void EvaluateGradient(double x[3], double g[3]);
 	virtual void updateBounds();
-    	virtual Primitive::PPointer copyWithoutTransform() const;
-	PTPointer smartP();
+    	virtual Primitive::Pointer copyWithoutTransform() const;
+	Pointer smartP();
 };
 
 template< class vtkImplicit >
@@ -72,9 +72,9 @@ void PrimitiveTemplate< vtkImplicit >::EvaluateGradient(double x[3], double g[3]
 
 
 template< class vtkImplicit >
-typename PrimitiveTemplate< vtkImplicit >::PTPointer PrimitiveTemplate< vtkImplicit >::smartP() {
+typename PrimitiveTemplate< vtkImplicit >::Pointer PrimitiveTemplate< vtkImplicit >::smartP() {
   PrimitiveDeleter d;
-  PTPointer p(this, d);
+  Pointer p(this, d);
   return p;
 }
 

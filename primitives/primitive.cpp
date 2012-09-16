@@ -32,8 +32,8 @@ void Primitive::setBounds(double xMin, double xMax, double yMin, double yMax, do
 
 BoundingBox Primitive::getBounds() const { return m_bbox;}
 
-Primitive::PPointer Primitive::translate(double x, double y, double z) const {
-	Primitive::PPointer transformed = this->copy();
+Primitive::Pointer Primitive::translate(double x, double y, double z) const {
+	Primitive::Pointer transformed = this->copy();
 	vtkSmartPointer<vtkTransform> trans = vtkTransform::SafeDownCast(transformed->vtk()->GetTransform());
 	if (!trans) trans = vtkSmartPointer<vtkTransform>::New();
 	trans->Translate(x,y,z);
@@ -41,8 +41,8 @@ Primitive::PPointer Primitive::translate(double x, double y, double z) const {
 	return transformed;
 }
 
-Primitive::PPointer Primitive::scale(double x, double y, double z) const {
-	Primitive::PPointer transformed = this->copy();
+Primitive::Pointer Primitive::scale(double x, double y, double z) const {
+	Primitive::Pointer transformed = this->copy();
 	vtkSmartPointer<vtkTransform> trans = vtkTransform::SafeDownCast(transformed->vtk()->GetTransform());
 	if (!trans) trans = vtkSmartPointer<vtkTransform>::New();
 	if (z != z) { // NaN
@@ -55,32 +55,32 @@ Primitive::PPointer Primitive::scale(double x, double y, double z) const {
 	return transformed;
 }
 
-Primitive::PPointer Primitive::rotateX(double a) const {
-	Primitive::PPointer transformed = this->copy();
+Primitive::Pointer Primitive::rotateX(double a) const {
+	Primitive::Pointer transformed = this->copy();
 	vtkSmartPointer<vtkTransform> trans = vtkTransform::SafeDownCast(transformed->vtk()->GetTransform());
 	if (!trans) trans = vtkSmartPointer<vtkTransform>::New();
 	trans->RotateX(a);
 	transformed->vtk()->SetTransform(trans);
 	return transformed;
 }
-Primitive::PPointer Primitive::rotateY(double a) const {
-	Primitive::PPointer transformed = this->copy();
+Primitive::Pointer Primitive::rotateY(double a) const {
+	Primitive::Pointer transformed = this->copy();
 	vtkSmartPointer<vtkTransform> trans = vtkTransform::SafeDownCast(transformed->vtk()->GetTransform());
 	if (!trans) trans = vtkSmartPointer<vtkTransform>::New();
 	trans->RotateY(a);
 	transformed->vtk()->SetTransform(trans);
 	return transformed;
 }
-Primitive::PPointer Primitive::rotateZ(double a) const {
-	Primitive::PPointer transformed = this->copy();
+Primitive::Pointer Primitive::rotateZ(double a) const {
+	Primitive::Pointer transformed = this->copy();
 	vtkSmartPointer<vtkTransform> trans = vtkTransform::SafeDownCast(transformed->vtk()->GetTransform());
 	if (!trans) trans = vtkSmartPointer<vtkTransform>::New();
 	trans->RotateZ(a);
 	transformed->vtk()->SetTransform(trans);
 	return transformed;
 }
-Primitive::PPointer Primitive::rotateAxis(double a, double x, double y, double z) const {
-	Primitive::PPointer transformed = this->copy();
+Primitive::Pointer Primitive::rotateAxis(double a, double x, double y, double z) const {
+	Primitive::Pointer transformed = this->copy();
 	vtkSmartPointer<vtkTransform> trans = vtkTransform::SafeDownCast(transformed->vtk()->GetTransform());
 	if (!trans) trans = vtkSmartPointer<vtkTransform>::New();
 	trans->RotateWXYZ(a,x,y,z);
@@ -88,8 +88,8 @@ Primitive::PPointer Primitive::rotateAxis(double a, double x, double y, double z
 	return transformed;
 }
 
-Primitive::PPointer Primitive::copy() const {
-	Primitive::PPointer cp = copyWithoutTransform();
+Primitive::Pointer Primitive::copy() const {
+	Primitive::Pointer cp = copyWithoutTransform();
 	cp->vtk()->SetTransform( const_cast<Primitive*>(this)->vtk()->GetTransform() );
 	return cp;
 }
