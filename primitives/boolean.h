@@ -6,10 +6,10 @@
 
 typedef PrimitiveTemplate<vtkImplicitBoolean> Boolean;
 template<> void Boolean::updateBounds();
-template <> Primitive::Pointer Boolean::copyWithoutTransform() const;
-Boolean::Pointer MakeUnion(Primitive::Pointer a, Primitive::Pointer b);
-Boolean::Pointer MakeIntersection(Primitive::Pointer a, Primitive::Pointer b);
-Boolean::Pointer MakeDifference(Primitive::Pointer a, Primitive::Pointer b);
+template <> Primitive::PPointer Boolean::copyWithoutTransform() const;
+Boolean::PTPointer MakeUnion(Primitive::PPointer a, Primitive::PPointer b);
+Boolean::PTPointer MakeIntersection(Primitive::PPointer a, Primitive::PPointer b);
+Boolean::PTPointer MakeDifference(Primitive::PPointer a, Primitive::PPointer b);
 
 /*
 

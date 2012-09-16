@@ -34,9 +34,9 @@
 /** Default Constructor.
 Nothing fancy - just basic setup */
 ImplicitMesh::ImplicitMesh(QWidget* parent, Qt::WFlags f):
-  QVTKWidget(parent, f),
-  m_sampler(vtkSampleFunction::New())
+  QVTKWidget(parent, f)
 {
+  m_sampler = vtkSmartPointer<vtkSampleFunction>::New();
   m_sampler->SetSampleDimensions(100,100,100);
   m_sampler->SetOutputScalarTypeToFloat();
   double value = 2.0;

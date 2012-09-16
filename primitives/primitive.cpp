@@ -1,6 +1,7 @@
 #include "primitive.h"
 #include <vtkTransform.h>
 #include <vtkImplicitFunction.h>
+#include <boost/cast.hpp>
 
 int objs=0;
 
@@ -15,11 +16,11 @@ Primitive::~Primitive() {
 }
 
 const vtkImplicitFunction *Primitive::vtk() const {
-  return dynamic_cast<const vtkImplicitFunction*>(this);
+  return boost::polymorphic_cast<const vtkImplicitFunction*>(this);
 }
 
 vtkImplicitFunction *Primitive::vtk() {
-  return dynamic_cast<vtkImplicitFunction*>(this);
+  return boost::polymorphic_cast<vtkImplicitFunction*>(this);
 }
 
 
@@ -31,8 +32,8 @@ void Primitive::setBounds(double xMin, double xMax, double yMin, double yMax, do
 
 BoundingBox Primitive::getBounds() const { return m_bbox;}
 
-Primitive::Pointer Primitive::translate(double x, double y, double z) const {
-	Primitive::Pointer transformed = this->copy();
+Primitive::PPointer Primitive::translate(double x, double y, double z) const {
+	Primitive::PPointer transformed = this->copy();
 	vtkSmartPointer<vtkTransform> trans = vtkTransform::SafeDownCast(transformed->vtk()->GetTransform());
 	if (!trans) trans = vtkSmartPointer<vtkTransform>::New();
 	trans->Translate(x,y,z);
@@ -40,8 +41,8 @@ Primitive::Pointer Primitive::translate(double x, double y, double z) const {
 	return transformed;
 }
 
-Primitive::Pointer Primitive::scale(double x, double y, double z) const {
-	Primitive::Pointer transformed = this->copy();
+Primitive::PPointer Primitive::scale(double x, double y, double z) const {
+	Primitive::PPointer transformed = this->copy();
 	vtkSmartPointer<vtkTransform> trans = vtkTransform::SafeDownCast(transformed->vtk()->GetTransform());
 	if (!trans) trans = vtkSmartPointer<vtkTransform>::New();
 	if (z != z) { // NaN
@@ -54,32 +55,32 @@ Primitive::Pointer Primitive::scale(double x, double y, double z) const {
 	return transformed;
 }
 
-Primitive::Pointer Primitive::rotateX(double a) const {
-	Primitive::Pointer transformed = this->copy();
+Primitive::PPointer Primitive::rotateX(double a) const {
+	Primitive::PPointer transformed = this->copy();
 	vtkSmartPointer<vtkTransform> trans = vtkTransform::SafeDownCast(transformed->vtk()->GetTransform());
 	if (!trans) trans = vtkSmartPointer<vtkTransform>::New();
 	trans->RotateX(a);
 	transformed->vtk()->SetTransform(trans);
 	return transformed;
 }
-Primitive::Pointer Primitive::rotateY(double a) const {
-	Primitive::Pointer transformed = this->copy();
+Primitive::PPointer Primitive::rotateY(double a) const {
+	Primitive::PPointer transformed = this->copy();
 	vtkSmartPointer<vtkTransform> trans = vtkTransform::SafeDownCast(transformed->vtk()->GetTransform());
 	if (!trans) trans = vtkSmartPointer<vtkTransform>::New();
 	trans->RotateY(a);
 	transformed->vtk()->SetTransform(trans);
 	return transformed;
 }
-Primitive::Pointer Primitive::rotateZ(double a) const {
-	Primitive::Pointer transformed = this->copy();
+Primitive::PPointer Primitive::rotateZ(double a) const {
+	Primitive::PPointer transformed = this->copy();
 	vtkSmartPointer<vtkTransform> trans = vtkTransform::SafeDownCast(transformed->vtk()->GetTransform());
 	if (!trans) trans = vtkSmartPointer<vtkTransform>::New();
 	trans->RotateZ(a);
 	transformed->vtk()->SetTransform(trans);
 	return transformed;
 }
-Primitive::Pointer Primitive::rotateAxis(double a, double x, double y, double z) const {
-	Primitive::Pointer transformed = this->copy();
+Primitive::PPointer Primitive::rotateAxis(double a, double x, double y, double z) const {
+	Primitive::PPointer transformed = this->copy();
 	vtkSmartPointer<vtkTransform> trans = vtkTransform::SafeDownCast(transformed->vtk()->GetTransform());
 	if (!trans) trans = vtkSmartPointer<vtkTransform>::New();
 	trans->RotateWXYZ(a,x,y,z);
@@ -87,8 +88,8 @@ Primitive::Pointer Primitive::rotateAxis(double a, double x, double y, double z)
 	return transformed;
 }
 
-Primitive::Pointer Primitive::copy() const {
-	Primitive::Pointer cp = copyWithoutTransform();
+Primitive::PPointer Primitive::copy() const {
+	Primitive::PPointer cp = copyWithoutTransform();
 	cp->vtk()->SetTransform( const_cast<Primitive*>(this)->vtk()->GetTransform() );
 	return cp;
 }

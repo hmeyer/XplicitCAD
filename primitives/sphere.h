@@ -6,7 +6,7 @@
 
 typedef PrimitiveTemplate<vtkSphere> Sphere;
 template<> void Sphere::updateBounds();
-template <> Primitive::Pointer Sphere::copyWithoutTransform() const;
+template <> Primitive::PPointer Sphere::copyWithoutTransform() const;
 Sphere::PTPointer MakeSphere(double r);
 
 #endif
