@@ -21,7 +21,7 @@
 #include "vtkSmartPointer.h"
 #include "vtkMatrix4x4.h"
 #include "vtkImageReslice.h"
-#include "vtkLookupTable.h"
+#include <vtkColorTransferFunction.h>
 #include "vtkImageMapToColors.h"
 #include "vtkImageActor.h"
 #include "vtkRenderer.h"
@@ -33,6 +33,7 @@
 #include "vtkInformation.h"
 #include <vtkSmartPointer.h>
 #include "primitive.h"
+#include <vtkVersion.h>
 
 
 // The mouse motion callback, to turn "Slicing" on and off
@@ -188,15 +189,21 @@ ImplicitMap::ImplicitMap(QWidget* parent, Qt::WFlags f):
   // Extract a slice in the desired orientation
   m_reslice->SetOutputDimensionality(2);
   m_reslice->SetResliceAxes(resliceAxes);
-  m_reslice->SetInterpolationModeToLinear();
+  m_reslice->SetInterpolationModeToCubic();
 
   // Create a greyscale lookup table
-  vtkSmartPointer<vtkLookupTable> table =
-    vtkSmartPointer<vtkLookupTable>::New();
-  table->SetRange(-0.2, 0.1); // image intensity range
-  table->SetValueRange(0.0, 1.0); // from black to white
-  table->SetSaturationRange(0.0, 0.0); // no color saturation
-  table->SetRampToLinear();
+  vtkSmartPointer<vtkColorTransferFunction> table =
+    vtkSmartPointer<vtkColorTransferFunction>::New();
+  table->RemoveAllPoints();
+  table->SetNanColor(0,0,1);
+  table->AddRGBPoint(	-1,	1,1,1);
+  table->AddRGBPoint(-1e-10,	0,1,0);
+  table->AddRGBPoint( 1e-10,	1,0,0);
+  table->AddRGBPoint( 	1,	0,0,0);
+//  table->SetRange(-0.2, 0.1); // image intensity range
+//  table->SetValueRange(0.0, 1.0); // from black to white
+//  table->SetSaturationRange(0.0, 0.0); // no color saturation
+//  table->SetRampToLinear();
   table->Build();
 
   // Map the image through the lookup table
@@ -208,7 +215,11 @@ ImplicitMap::ImplicitMap(QWidget* parent, Qt::WFlags f):
   // Display the image
   vtkSmartPointer<vtkImageActor> actor =
     vtkSmartPointer<vtkImageActor>::New();
+#if (VTK_MAJOR_VERSION>5)
+  actor->SetInputData(color->GetOutput());
+#else
   actor->SetInput(color->GetOutput());
+#endif
   
   // Visualize
   vtkSmartPointer<vtkRenderer> renderer = 

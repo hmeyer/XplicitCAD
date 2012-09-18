@@ -97,7 +97,7 @@
           <property name="minimumSize">
            <size>
             <width>79</width>
-            <height>10</height>
+            <height>41</height>
            </size>
           </property>
           <widget class="ImplicitMap" name="implicitMap"/>
@@ -156,7 +156,7 @@
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>View</string>
+     <string>&amp;View</string>
     </property>
     <addaction name="actionImplicit_Map"/>
    </widget>
@@ -232,7 +232,10 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Implicit Map</string>
+    <string>Implicit &amp;Map</string>
+   </property>
+   <property name="shortcut">
+    <string>F7</string>
    </property>
   </action>
  </widget>

@@ -29,7 +29,7 @@ vtkImplicitFunction *Primitive::vtk() {
 
 void Primitive::setBounds(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax) {
 	m_bbox.SetBounds(xMin, xMax, yMin, yMax, zMin, zMax);
-	m_bbox.Inflate(1);
+	m_bbox.Inflate(100);
 }
 
 BoundingBox Primitive::getBounds() const { return m_bbox;}

@@ -13,7 +13,7 @@
 class vtkImplicitFunction;
 class PrimitiveDeleter;
 
-class VTK_FILTERING_EXPORT Primitive {
+class Primitive {
 public:
 	typedef boost::shared_ptr<Primitive> Pointer;
 	Primitive();
@@ -45,7 +45,7 @@ public:
 
 
 template< class vtkImplicit >
-class VTK_FILTERING_EXPORT PrimitiveTemplate: public vtkImplicit, public Primitive {
+class PrimitiveTemplate: public vtkImplicit, public Primitive {
 public:
 	typedef boost::shared_ptr<PrimitiveTemplate> Pointer;
 	PrimitiveTemplate() {}
@@ -61,13 +61,13 @@ public:
 
 template< class vtkImplicit >
 double PrimitiveTemplate< vtkImplicit >::EvaluateFunction(double x[3]) {
-	if (m_bbox.ContainsPoint(x)) return vtkImplicit::EvaluateFunction(x);
+	if (true || m_bbox.ContainsPoint(x)) return vtkImplicit::EvaluateFunction(x);
 	else return std::numeric_limits<double>::max();
 }
 
 template< class vtkImplicit >
 void PrimitiveTemplate< vtkImplicit >::EvaluateGradient(double x[3], double g[3]) {
-	if (m_bbox.ContainsPoint(x)) vtkImplicit::EvaluateGradient(x, g);
+	if (true || m_bbox.ContainsPoint(x)) vtkImplicit::EvaluateGradient(x, g);
 	else { g[0] = g[1] = g[2] = 0; }
 }
 

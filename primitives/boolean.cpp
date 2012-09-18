@@ -1,9 +1,20 @@
 #include "boolean.h"
 #include <vtkObjectFactory.h>
 #include <vtkImplicitFunctionCollection.h>
+#include <vtkVersion.h>
 
 template<>
 vtkStandardNewMacro( Boolean );
+
+#if (VTK_MAJOR_VERSION>5)
+const int OP_UNION = vtkImplicitBoolean::VTK_UNION;
+const int OP_INTERSECTION = vtkImplicitBoolean::VTK_INTERSECTION;
+const int OP_DIFFERENCE = vtkImplicitBoolean::VTK_DIFFERENCE;
+#else
+const int OP_UNION = VTK_UNION;
+const int OP_INTERSECTION = VTK_INTERSECTION;
+const int OP_DIFFERENCE = VTK_DIFFERENCE;
+#endif
 
 
 Boolean::Pointer MakeBoolean(int operationType, Primitive::Pointer a=Primitive::Pointer(), Primitive::Pointer b=Primitive::Pointer()) {
@@ -15,9 +26,9 @@ Boolean::Pointer MakeBoolean(int operationType, Primitive::Pointer a=Primitive::
 	return bf->smartP();
 }
 
-Boolean::Pointer MakeUnion(Primitive::Pointer a, Primitive::Pointer b) { return MakeBoolean(VTK_UNION, a, b); }
-Boolean::Pointer MakeIntersection(Primitive::Pointer a, Primitive::Pointer b) { return MakeBoolean(VTK_INTERSECTION, a, b); }
-Boolean::Pointer MakeDifference(Primitive::Pointer a, Primitive::Pointer b) { return MakeBoolean(VTK_DIFFERENCE, a, b); }
+Boolean::Pointer MakeUnion(Primitive::Pointer a, Primitive::Pointer b) { return MakeBoolean(OP_UNION, a, b); }
+Boolean::Pointer MakeIntersection(Primitive::Pointer a, Primitive::Pointer b) { return MakeBoolean(OP_INTERSECTION, a, b); }
+Boolean::Pointer MakeDifference(Primitive::Pointer a, Primitive::Pointer b) { return MakeBoolean(OP_DIFFERENCE, a, b); }
 
 template<> void Boolean::updateBounds() {
 	setBounds(-100,100,-100,100,-100,100);
@@ -27,9 +38,9 @@ template <> Primitive::Pointer Boolean::copyWithoutTransform() const {
 	Boolean::Pointer cp = MakeBoolean( const_cast<Boolean*>(this)->GetOperationType() );
 	vtkImplicitFunctionCollection *fc = const_cast<Boolean*>(this)->GetFunction();
 	vtkImplicitFunction *f;
-	while(f = fc->GetNextItem()) {
+	vtkCollectionSimpleIterator sit;
+	for (fc->InitTraversal(sit); (f=fc->GetNextImplicitFunction(sit)); )
 		cp->AddFunction(f);
-	}
 	cp->updateBounds();
 	return cp;
 }
